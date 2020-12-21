@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Idatabots payment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.omise.co/omise.js"></script>
+  <script src="https://cdn.omise.co/omise.js.gz"> </script>
+
+</head>
+<body> 
+    <form id="card" name="checkoutForm" method="POST" action="checkout.php">
+    <input id="holder_name" type="text" />
+    <input id="number" type="text" />
+    <input id="expiration_month" type="number" />
+    <input id="expiration_year" type="number" />
+    <input id="security_code" type="number" />
+    <button type="submit" id="checkoutButton">Checkout</button>
+    </form>
+    <script> 
+             // Given that you have a form element with an id of "card" in your page.
+             var card_form = document.getElementById('card')
+             // Serialize the card into a valid card object.
+             var card = {
+                  name: card_form.holder_name.value,
+                  number: card_form.number.value,
+                  expiration_month: card_form.expiration_month.value,
+                  expiration_year: card_form.expiration_year.value,
+                  security_code: card_form.security_code.value,
+             }
+              Omise.createToken('card', card, function(statusCode, response) {
+             if (statusCode == 200) {
+             // Success: send back the TOKEN_ID to your server to create a charge.
+             // The TOKEN_ID can be found in `response.id`.
+            } else {
+            // Error: display an error message. Note that `response.message` contains
+            // a preformatted error message. Also note that `response.code` will be
+            // "invalid_card" in case of validation error on the card.
+            // Example Error displaying
+            alert(response.code + ': ' + response.message)
+          }
+       })
+
+    </script>  
+
+</body>
+
+</html>
+
